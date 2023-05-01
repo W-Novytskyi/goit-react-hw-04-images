@@ -3,14 +3,13 @@ import { GalleryItem, Image } from './ImageGalleryItem.styled';
 import PropTypes from 'prop-types';
 
 const ImageGalleryItem = ({
-  id,
   webformatURL,
   largeImageURL,
   tags,
   toggleModal,
 }) => {
   return (
-    <GalleryItem key={id}>
+    <GalleryItem>
       <Image
         src={webformatURL}
         alt={tags}
@@ -21,7 +20,6 @@ const ImageGalleryItem = ({
 };
 
 ImageGalleryItem.propTypes = {
-  id: PropTypes.number.isRequired,
   webformatURL: PropTypes.string.isRequired,
   largeImageURL: PropTypes.string.isRequired,
   tags: PropTypes.string.isRequired,

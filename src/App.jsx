@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { useState, useEffect } from 'react';
 import Searchbar from 'components/Searchbar/Searchbar';
 import ImageGallery from 'components/ImageGallery/ImageGallery';
 import { ToastContainer } from 'react-toastify';
@@ -11,6 +11,48 @@ import Loader from 'components/Loader/Loader';
 import { toast } from 'react-toastify';
 
 const API_KEY = '34344088-cfac681c64979560ee45228c3';
+
+export default function App() {
+  const [searchName, setSearchName] = useState('');
+  const [galleryList, setGalleryList] = useState([]);
+  const [page, setPage] = useState(1);
+  const [showModal, setShowModal] = useState(false);
+  const [modalImage, setModalImage] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const fetchGallery = () => {
+    fetch(
+      `https://pixabay.com/api/?q=${searchName}&page=${page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`
+    )
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        if (data.totalHits === 0) {
+          return toast.error(`No images for this request ${searchName}`);
+        }
+
+        setGalleryList(prevState => [...prevState, ...data.hits]);
+      })
+      .catch(error => {
+        console.error(error);
+      })
+      .finally(() => setLoading(false));
+  };
+
+  const toggleModal = largeImageURL => {
+    setShowModal(prevState => (!prevState.showModal)),
+    setModalImage(largeImageURL);
+  };
+
+  const loadMore = () => {
+    setPage(prevState => prevState.page + 1)
+      }
+      
+  };
+
+
+
 
 class App extends Component {
   state = {
@@ -86,7 +128,6 @@ class App extends Component {
             galleryList.map(({ id, webformatURL, largeImageURL, tags }) => (
               <ImageGalleryItem
                 key={id}
-                id={id}
                 webformatURL={webformatURL}
                 largeImageURL={largeImageURL}
                 tags={tags}
