@@ -10,7 +10,7 @@ import {
 } from './Searchbar.styled';
 import PropTypes from 'prop-types';
 
-export default function Searchbar(props) {
+export default function Searchbar({ onSubmit }) {
   const [searchName, setSearchName] = useState('');
 
   const handleChange = event => {
@@ -24,7 +24,7 @@ export default function Searchbar(props) {
         'Sorry, there are no images matching your search query. Please try again.'
       );
     }
-    props.onSubmit(searchName);
+    onSubmit(searchName);
   };
 
   return (

@@ -22,19 +22,17 @@ export default function App() {
 
   const handleFormSubmit = searchName => {
     setSearchName(searchName);
+    setGalleryList([]);
+    setPage(1);
   };
 
   useEffect(() => {
-    if (searchName !== '') {
-      setGalleryList([]);
-      setPage(1);
-      setLoading(true);
-
-      fetchGallery();
+    if (searchName === '') {
+      return;
     }
-  }, [searchName, page]);
 
-  const fetchGallery = () => {
+    setLoading(true);
+
     fetch(
       `https://pixabay.com/api/?q=${searchName}&page=${page}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`
     )
@@ -52,7 +50,7 @@ export default function App() {
         console.error(error);
       })
       .finally(() => setLoading(false));
-  };
+  }, [searchName, page]);
 
   const toggleModal = largeImageURL => {
     setShowModal(prevState => !prevState);
