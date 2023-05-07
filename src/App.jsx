@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Searchbar from 'components/Searchbar/Searchbar';
 import ImageGallery from 'components/ImageGallery/ImageGallery';
 import { ToastContainer } from 'react-toastify';
@@ -19,11 +19,17 @@ export default function App() {
   const [showModal, setShowModal] = useState(false);
   const [modalImage, setModalImage] = useState('');
   const [loading, setLoading] = useState(false);
+  const searchNameRef = useRef();
 
   const handleFormSubmit = searchName => {
+    if (searchName === searchNameRef.current) {
+      return;
+    }
+
     setSearchName(searchName);
     setGalleryList([]);
     setPage(1);
+    searchNameRef.current = searchName;
   };
 
   useEffect(() => {
